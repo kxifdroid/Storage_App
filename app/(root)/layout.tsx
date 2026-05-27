@@ -1,5 +1,4 @@
 import React from "react";
-import { makeGetServerInsertedHTML } from "next/dist/server/app-render/make-get-server-inserted-html";
 import MobileNavigation from "@/components/MobileNavigation";
 import Header from "@/components/Header";
 import Sidebar from "@/components/Sidebar";

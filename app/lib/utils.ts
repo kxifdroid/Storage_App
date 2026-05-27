@@ -183,7 +183,12 @@ export const constructDownloadUrl = (bucketFileId: string) => {
 };
 
 // DASHBOARD UTILS
-export const getUsageSummary = (totalSpace: any) => {
+type TotalSpaceUsage = Record<FileType, { size: number; latestDate: string }> & {
+  used: number;
+  all: number;
+};
+
+export const getUsageSummary = (totalSpace: TotalSpaceUsage) => {
   return [
     {
       title: "Documents",

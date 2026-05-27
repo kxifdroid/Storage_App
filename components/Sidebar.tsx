@@ -10,11 +10,10 @@ import { cn } from "@/lib/utils";
 
 interface Props {
   fullName: string;
-  avatar: string;
   email: string;
 }
 
-const Sidebar = ({ fullName, avatar, email }: Props) => {
+const Sidebar = ({ fullName, email }: Props) => {
   const pathname = usePathname();
 
   return (

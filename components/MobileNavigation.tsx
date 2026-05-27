@@ -3,10 +3,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import {
   Sheet,
-  SheetClose,
   SheetContent,
-  SheetDescription,
-  SheetFooter,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
