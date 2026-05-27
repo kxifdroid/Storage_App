@@ -115,8 +115,7 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 
 ## <a name="links">🔗 Resources</a>
 
-- Assets used in the project can be found [here](https://jsm.dev/gdrive-kit)
+- Resources used in the project can be found [here](https://jsm.dev/gdrive-kit)
 
 <a href="https://jsm.dev/gdrive-kit">
-  <img src="public/readme/videokit.png" alt="Video Kit Banner">
 </a>
