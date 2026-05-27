@@ -61,6 +61,62 @@ export const uploadFile = async ({
   }
 };
 
+export const createUploadJwt = async () => {
+  const { account } = await createSessionClient();
+  const jwt = await account.createJWT();
+
+  return jwt.jwt;
+};
+
+export const createFileDocument = async ({
+  bucketFileId,
+  name,
+  size,
+  ownerId,
+  accountId,
+  path,
+}: {
+  bucketFileId: string;
+  name: string;
+  size: number;
+  ownerId: string;
+  accountId: string;
+  path: string;
+}) => {
+  const { databases, storage } = await createAdminClient();
+
+  try {
+    const fileDocument = {
+      type: getFileType(name).type,
+      name,
+      url: constructFileUrl(bucketFileId),
+      extension: getFileType(name).extension,
+      size,
+      owner: ownerId,
+      accountId,
+      users: [],
+      bucketFileId,
+    };
+
+    const newFile = await databases
+      .createDocument(
+        appwriteConfig.databaseId,
+        appwriteConfig.filesCollectionId,
+        ID.unique(),
+        fileDocument,
+      )
+      .catch(async (error: unknown) => {
+        await storage.deleteFile(appwriteConfig.bucketId, bucketFileId);
+        handleError(error, "Failed to create file document");
+      });
+
+    revalidatePath(path);
+    return parseStringify(newFile);
+  } catch (error) {
+    handleError(error, "Failed to create file document");
+  }
+};
+
 const createQueries = (
   currentUser: Models.Document,
   types: string[],

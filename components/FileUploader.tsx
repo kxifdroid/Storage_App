@@ -7,9 +7,14 @@ import Image from "next/image";
 import { convertFileToUrl, getFileType } from "@/app/lib/utils";
 import Thumbnail from "@/components/Thumbnail";
 import { MAX_FILE_SIZE } from "@/constants";
-import { uploadFile } from "@/app/lib/action/files.action";
+import { getClientStorage } from "@/app/lib/appwrite/client";
+import {
+  createFileDocument,
+  createUploadJwt,
+} from "@/app/lib/action/files.action";
 import { usePathname } from "next/navigation";
 import { toast } from "sonner";
+import { ID } from "appwrite";
 
 interface Props {
   ownerId: string;
@@ -34,7 +39,22 @@ const FileUploader = ({ ownerId, accountId, className }: Props) => {
         }
 
         try {
-          const uploadedFile = await uploadFile({ file, ownerId, accountId, path });
+          const jwt = await createUploadJwt();
+          const storage = getClientStorage(jwt);
+          const bucketFile = await storage.createFile(
+            process.env.NEXT_PUBLIC_APPWRITE_BUCKET!,
+            ID.unique(),
+            file,
+          );
+
+          const uploadedFile = await createFileDocument({
+            bucketFileId: bucketFile.$id,
+            name: bucketFile.name,
+            size: bucketFile.sizeOriginal,
+            ownerId,
+            accountId,
+            path,
+          });
 
           if (uploadedFile) {
             setFiles((prevFiles) =>
