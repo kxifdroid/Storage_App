@@ -99,5 +99,5 @@ Open [http://localhost:3000](http://localhost:3000) in your browser to view the 
 
 - Resources used in the project can be found [here](https://jsm.dev/gdrive-kit)
 
-<a href="https://jsm.dev/gdrive-kit">
+<a href="https://www.figma.com/design/rIguqyY7iNoiOpTcltBHTg/StoreIt---Google-Drive-Clone?node-id=2-2&p=f&t=Yif379FwztRuOx1Q-0">
 </a>
