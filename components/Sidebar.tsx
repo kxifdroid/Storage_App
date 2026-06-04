@@ -1,20 +1,27 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { avatarPlaceholderUrl, navItems } from "@/constants";
 
 import { cn } from "@/lib/utils";
+import ProfileModal from "@/components/ProfileModal";
+import ContactModal from "@/components/ContactModal";
 
 interface Props {
   fullName: string;
   email: string;
+  avatar?: string;
+  accountId?: string;
+  $id?: string; // user document id
 }
 
-const Sidebar = ({ fullName, email }: Props) => {
+const Sidebar = ({ fullName, email, avatar, $id }: Props) => {
   const pathname = usePathname();
+  const [isProfileOpen, setIsProfileOpen] = useState(false);
+  const [isContactOpen, setIsContactOpen] = useState(false);
 
   return (
     <aside className="sidebar">
@@ -68,18 +75,43 @@ const Sidebar = ({ fullName, email }: Props) => {
         className="w-full"
       />
       <div className="sidebar-user-info">
-        <Image
-          src={avatarPlaceholderUrl}
-          alt="Avatar"
-          width={44}
-          height={44}
-          className="sidebar-user-avatar"
-        />
-        <div className="hidden lg:block">
-          <p className="subtitle-2 capitalize">{fullName}</p>
-          <p className="caption">{email}</p>
+        <button
+          onClick={() => setIsProfileOpen(true)}
+          className="flex items-center gap-3"
+          aria-label="Open profile"
+        >
+          <Image
+            src={avatar || avatarPlaceholderUrl}
+            alt="Avatar"
+            width={44}
+            height={44}
+            className="sidebar-user-avatar"
+          />
+          <div className="hidden lg:block text-left">
+            <p className="subtitle-2 capitalize">{fullName}</p>
+            <p className="caption">{email}</p>
+          </div>
+        </button>
+
+        <div className="mt-3 lg:mt-0">
+          <button
+            onClick={() => setIsContactOpen(true)}
+            className="text-sm text-brand underline"
+          >
+            Contact Developer
+          </button>
         </div>
       </div>
+
+      <ProfileModal
+        open={isProfileOpen}
+        onOpenChange={setIsProfileOpen}
+        defaultFullName={fullName}
+        avatar={avatar}
+        userDocId={$id}
+      />
+
+      <ContactModal open={isContactOpen} onOpenChange={setIsContactOpen} />
     </aside>
   );
 };

@@ -1,7 +1,10 @@
 "use server";
 
 import { ID, Query } from "node-appwrite";
-import { createAdminClient, createSessionClient } from "@/app/lib/appwrite";
+import {
+  createAdminClient,
+  createSessionClient,
+} from "@/app/lib/appwrite";
 import { appwriteConfig } from "@/app/lib/appwrite/config";
 import { parseStringify } from "@/app/lib/utils";
 import { cookies } from "next/headers";
@@ -14,6 +17,17 @@ const getUserByEmail = async (email: string) => {
     appwriteConfig.databaseId,
     appwriteConfig.userCollectionId,
     [Query.equal("email", [email])],
+  );
+
+  return result.total > 0 ? result.documents[0] : null;
+};
+
+const getUserByAccountId = async (accountId: string) => {
+  const { databases } = await createAdminClient();
+  const result = await databases.listDocuments(
+    appwriteConfig.databaseId,
+    appwriteConfig.userCollectionId,
+    [Query.equal("accountId", [accountId])],
   );
 
   return result.total > 0 ? result.documents[0] : null;
@@ -95,7 +109,6 @@ export const verifySecret = async ({
     handleError(error, "Failed to verify OTP");
   }
 };
-
 export const getCurrentUser = async () => {
   try {
     const { databases, account } = await createSessionClient();
@@ -145,3 +158,35 @@ export const signInUser = async ({ email }: { email: string }) => {
   }
 };
 
+export const updateUserProfile = async ({
+  fullName,
+  email,
+  avatar,
+}: {
+  fullName?: string;
+  email?: string;
+  avatar?: string;
+}) => {
+  try {
+    const currentUser = await getCurrentUser();
+    if (!currentUser) throw new Error("User not found");
+
+    const { databases } = await createAdminClient();
+
+    const updatePayload: Record<string, unknown> = {};
+    if (typeof fullName === "string") updatePayload.fullName = fullName;
+    if (typeof email === "string") updatePayload.email = email;
+    if (typeof avatar === "string") updatePayload.avatar = avatar;
+
+    const updated = await databases.updateDocument(
+      appwriteConfig.databaseId,
+      appwriteConfig.userCollectionId,
+      currentUser.$id,
+      updatePayload,
+    );
+
+    return parseStringify(updated);
+  } catch (error) {
+    handleError(error, "Failed to update user profile");
+  }
+};

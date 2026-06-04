@@ -1,4 +1,4 @@
-"use server"
+"use server";
 
 import { Client, Account, Databases, Avatars, Storage } from "node-appwrite";
 import {
@@ -6,6 +6,24 @@ import {
   validateAppwriteConfig,
 } from "@/app/lib/appwrite/config";
 import { cookies } from "next/headers";
+
+export const createSessionClientFromSecret = async (secret: string) => {
+  validateAppwriteConfig();
+
+  const client = new Client()
+    .setEndpoint(appwriteConfig.endpointUrl)
+    .setProject(appwriteConfig.projectId)
+    .setSession(secret);
+
+  return {
+    get account() {
+      return new Account(client);
+    },
+    get databases() {
+      return new Databases(client);
+    },
+  };
+};
 
 export const createSessionClient = async () => {
   validateAppwriteConfig();

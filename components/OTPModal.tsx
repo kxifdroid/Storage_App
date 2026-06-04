@@ -1,5 +1,5 @@
 "use client"
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   AlertDialog,
   AlertDialogContent,
@@ -28,8 +28,15 @@ const OtpModal = ({accountId, email}: {accountId: string; email : string}) => {
   const [message, setMessage] = useState("");
   const [messageType, setMessageType] = useState<"success" | "error" | "">("");
 
-  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
+  // Auto-submit when OTP is complete (6 digits)
+  useEffect(() => {
+    if (password.length === 6 && !isLoading && !isResending) {
+      handleSubmit();
+    }
+  }, [password]);
+
+  const handleSubmit = async (e?: React.MouseEvent<HTMLButtonElement>) => {
+    if (e) e.preventDefault();
 
     if (password.length !== 6) {
       setMessage("Enter the 6-digit code from your email.");

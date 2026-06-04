@@ -305,6 +305,18 @@
   .form-submit-button {
     @apply primary-btn h-[66px] !important;
   }
+  .auth-divider {
+    @apply flex items-center gap-4 text-light-100 body-2 !important;
+  }
+  .auth-divider span {
+    @apply h-px flex-1 bg-light-300 !important;
+  }
+  .google-auth-button {
+    @apply h-[66px] w-full rounded-full border-light-300 bg-white text-light-100 shadow-drop-1 hover:bg-light-400 !important;
+  }
+  .google-auth-icon {
+    @apply mr-2 flex size-6 items-center justify-center rounded-full bg-white text-[16px] font-bold text-brand shadow-sm !important;
+  }
   .error-message {
     @apply body-2 mx-auto w-fit rounded-xl bg-error/5 px-8 py-4 text-center text-error !important;
   }
