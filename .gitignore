@@ -1,41 +1,78 @@
-# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
-
-# dependencies
-/node_modules
-/.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
-
-# testing
-/coverage
-
-# next.js
-/.next/
-/out/
-
-# production
-/build
-
-# misc
-.DS_Store
-*.pem
-
-# debug
+# Node / package manager
+node_modules/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
+.pnpm-store/
+.pnpm-debug.log
 
-# env files (can opt-in for commiting if needed)
-.env
+# Next.js build / output
+.next/
+out/
+.build/
+dist/
 
-# vercel
-.vercel
+# Production
+/.vercel
+.vercel/
+.now
+.now/
 
-# typescript
+# Appwrite / storage artifacts (if any)
+# (no default artifacts here, change if you create local secrets/files)
+# .appwrite/
+
+# Environment variables (do NOT commit secrets)
+.env.local
+.env.*.local
+.env.development.local
+.env.test.local
+.env.production.local
+.env.*.secret
+!.env.example
+
+# Build caches, bundlers, tooling
+.cache/
+.parcel-cache/
+.turbopack/
+.turbo/
+.eslintcache
+.vscode/
+.idea/
+
+# TypeScript
 *.tsbuildinfo
-next-env.d.ts
-../../full-stack/storage-project/storage_management_solution/.env.local
+tsconfig.tsbuildinfo
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Coverage / reports
+coverage/
+coverage-*/
+
+# Temporary / misc
+*.tmp
+*.temp
+*.swp
+*.swo
+
+# Images and large files you don't want to commit
+*.psd
+*.ai
+*.sketch
+
+# Sonner/toaster or other temp files - adjust as needed
+*.local
+
+# Optional: ignore lockfile if you prefer not to commit it (I recommend keeping it)
+# package-lock.json
+# yarn.lock
